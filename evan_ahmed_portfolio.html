@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evan Ahmed | Portfolio & Profile</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        glass: 'rgba(255, 255, 255, 0.75)',
+                        glassBorder: 'rgba(255, 255, 255, 0.6)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Glassmorphism & Animations */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        @keyframes floatBlob {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+        .animate-blob1 {
+            animation: floatBlob 8s ease-in-out infinite;
+        }
+        .animate-blob2 {
+            animation: floatBlob 10s ease-in-out infinite reverse;
+        }
+        .animate-blob3 {
+            animation: floatBlob 12s ease-in-out infinite 2s;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-indigo-50/40 to-sky-50/50 min-h-screen text-slate-800 relative overflow-x-hidden font-sans">
+
+    <!-- Background Animated Blobs -->
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-indigo-200/40 rounded-full blur-3xl pointer-events-none animate-blob1"></div>
+    <div class="absolute top-1/3 right-10 w-96 h-96 bg-sky-200/40 rounded-full blur-3xl pointer-events-none animate-blob2"></div>
+    <div class="absolute bottom-20 left-10 w-96 h-96 bg-pink-200/30 rounded-full blur-3xl pointer-events-none animate-blob3"></div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed top-24 right-5 z-50 transform translate-y-[-200%] transition-transform duration-300 glass-card px-6 py-4 rounded-2xl shadow-xl flex items-center space-x-3 border-l-4 border-indigo-500">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-indigo-600 text-xl"></i>
+        <div>
+            <h4 id="toast-title" class="font-bold text-sm text-slate-800">Success</h4>
+            <p id="toast-msg" class="text-xs text-slate-600">Action completed successfully.</p>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="fixed top-0 left-0 right-0 z-40 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 to-sky-500 flex items-center justify-center text-white font-bold text-xl shadow-lg group-hover:scale-105 transition-transform">
+                    EA
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg text-slate-900 tracking-tight">Evan Ahmed</h1>
+                    <p class="text-xs text-indigo-600 font-medium">Class 7 • Banophool Adibashi</p>
+                </div>
+            </a>
+            
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
+                <a href="#about" class="hover:text-indigo-600 transition-colors">About</a>
+                <a href="#tribute" class="hover:text-indigo-600 transition-colors">Favorite Teacher</a>
+                <a href="#gallery" class="hover:text-indigo-600 transition-colors">Gallery</a>
+                <a href="#rating" class="hover:text-indigo-600 transition-colors">Rate Profile</a>
+                <a href="#contact" class="hover:text-indigo-600 transition-colors">Contact</a>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <button onclick="openAdminModal()" class="px-4 py-2 text-xs font-semibold bg-indigo-600/10 text-indigo-700 hover:bg-indigo-600 hover:text-white rounded-xl transition-all duration-300 border border-indigo-200 shadow-sm flex items-center space-x-2">
+                    <i class="fa-solid fa-crown text-amber-500"></i>
+                    <span>Evan's Rater Log</span>
+                </button>
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 rounded-xl glass-card text-slate-700 hover:text-indigo-600">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass-card border-t border-white/40 px-6 py-4 space-y-3">
+            <a href="#about" onclick="toggleMobileMenu()" class="block text-sm font-medium text-slate-700 hover:text-indigo-600">About</a>
+            <a href="#tribute" onclick="toggleMobileMenu()" class="block text-sm font-medium text-slate-700 hover:text-indigo-600">Favorite Teacher</a>
+            <a href="#gallery" onclick="toggleMobileMenu()" class="block text-sm font-medium text-slate-700 hover:text-indigo-600">Gallery</a>
+            <a href="#rating" onclick="toggleMobileMenu()" class="block text-sm font-medium text-slate-700 hover:text-indigo-600">Rate Profile</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="block text-sm font-medium text-slate-700 hover:text-indigo-600">Contact</a>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
+
+        <!-- Hero Section -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass-card text-xs font-semibold text-indigo-700 border border-indigo-100 shadow-sm">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>Welcome to My Official Portfolio Website</span>
+                </div>
+                <h1 class="text-4xl sm:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                    Hi, I'm <span class="bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent">Evan Ahmed</span>
+                </h1>
+                <p class="text-lg text-slate-600 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
+                    An enthusiastic Class 7 student at <strong class="text-slate-800">Banophool Adibashi Green Heart School</strong>. Passionate about nature exploration, technology, learning new things, and making wonderful memories!
+                </p>
+                <div class="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
+                    <a href="tel:01976373910" class="px-6 py-3.5 rounded-2xl bg-indigo-600 text-white font-semibold text-sm shadow-lg shadow-indigo-500/30 hover:bg-indigo-700 transition-all flex items-center space-x-2">
+                        <i class="fa-solid fa-phone"></i>
+                        <span>Call 01976373910</span>
+                    </a>
+                    <a href="https://wa.me/8801976373910?text=Hi%20Evan,%20I%20visited%20your%20portfolio%20website!" target="_blank" class="px-6 py-3.5 rounded-2xl glass-card text-emerald-700 font-semibold text-sm hover:bg-emerald-50 transition-all flex items-center space-x-2 border border-emerald-200">
+                        <i class="fa-brands fa-whatsapp text-lg text-emerald-600"></i>
+                        <span>WhatsApp Chat</span>
+                    </a>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-3 gap-4 pt-6 max-w-lg mx-auto lg:mx-0">
+                    <div class="glass-card p-4 rounded-2xl text-center">
+                        <h3 class="text-2xl font-bold text-indigo-600">Class 7</h3>
+                        <p class="text-xs text-slate-500 mt-1">Current Grade</p>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl text-center">
+                        <h3 id="hero-avg-rating" class="text-2xl font-bold text-amber-500 flex items-center justify-center space-x-1">
+                            <span>4.9</span> <i class="fa-solid fa-star text-sm"></i>
+                        </h3>
+                        <p class="text-xs text-slate-500 mt-1">Profile Rating</p>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl text-center">
+                        <h3 id="hero-total-raters" class="text-2xl font-bold text-sky-600">18+</h3>
+                        <p class="text-xs text-slate-500 mt-1">Total Raters</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Avatar / Featured Card -->
+            <div class="lg:col-span-5 flex justify-center">
+                <div class="relative w-full max-w-md">
+                    <!-- Glow ring -->
+                    <div class="absolute -inset-1.5 bg-gradient-to-r from-indigo-500 to-sky-400 rounded-3xl blur-xl opacity-30 animate-pulse"></div>
+                    <div class="glass-card p-4 rounded-3xl relative">
+                        <div class="rounded-2xl overflow-hidden shadow-md aspect-[4/5] bg-slate-200 relative group">
+                            <img src="evan4.jpg" alt="Evan Ahmed Portrait" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x750/e0e7ff/4f46e5?text=Evan+Ahmed'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
+                                <span class="bg-indigo-500 text-xs font-semibold px-3 py-1 rounded-full w-max mb-2">Student Explorer</span>
+                                <h3 class="text-xl font-bold">Evan Ahmed</h3>
+                                <p class="text-xs text-slate-200">Banophool Adibashi Green Heart School</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass-card p-8 rounded-3xl space-y-4 hover:shadow-xl transition-shadow">
+                <div class="w-12 h-12 rounded-2xl bg-indigo-100 flex items-center justify-center text-indigo-600 text-xl font-bold">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">Education</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                    Currently studying in <strong class="text-slate-800">Class 7</strong> at the prestigious <strong class="text-slate-800">Banophool Adibashi Green Heart School</strong>. Always eager to learn new subjects and excel in academics.
+                </p>
+            </div>
+
+            <div class="glass-card p-8 rounded-3xl space-y-4 hover:shadow-xl transition-shadow">
+                <div class="w-12 h-12 rounded-2xl bg-sky-100 flex items-center justify-center text-sky-600 text-xl font-bold">
+                    <i class="fa-solid fa-tree"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">Nature & Outdoors</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                    A true nature lover at heart! Enjoys scenic boat rides, open green fields, fresh air, river landscapes, and capturing peaceful moments in nature.
+                </p>
+            </div>
+
+            <div class="glass-card p-8 rounded-3xl space-y-4 hover:shadow-xl transition-shadow">
+                <div class="w-12 h-12 rounded-2xl bg-pink-100 flex items-center justify-center text-pink-600 text-xl font-bold">
+                    <i class="fa-solid fa-laptop-code"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">Tech & Hobbies</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                    Fascinated by technology, gadgets, and modern web creations. Loves exploring new ideas, listening to music, and spending quality time with friends and mentors.
+                </p>
+            </div>
+        </section>
+
+        <!-- Favorite Teacher Tribute Section -->
+        <section id="tribute" class="relative">
+            <div class="absolute -inset-2 bg-gradient-to-r from-amber-400 via-pink-400 to-indigo-500 rounded-3xl blur-xl opacity-20"></div>
+            <div class="glass-card p-8 sm:p-12 rounded-3xl relative space-y-6 border border-amber-200/50">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-400 flex items-center justify-center text-white text-2xl shadow-lg">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-3 py-1 rounded-full">Special Tribute</span>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">My Favorite Teacher</h2>
+                        </div>
+                    </div>
+                    <div class="glass-card px-4 py-2 rounded-2xl text-xs font-semibold text-slate-700 flex items-center space-x-2">
+                        <i class="fa-solid fa-heart text-rose-500"></i>
+                        <span>Mentor & Guide</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center pt-4">
+                    <div class="md:col-span-4 flex flex-col items-center justify-center p-6 rounded-2xl bg-white/60 border border-white text-center shadow-sm">
+                        <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white text-3xl font-bold shadow-md mb-4">
+                            <i class="fa-solid fa-chalkboard-user"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Md. Nayem Sir</h3>
+                        <p class="text-xs text-indigo-600 font-medium mt-1">Respected Teacher & Instructor</p>
+                    </div>
+                    <div class="md:col-span-8 space-y-4">
+                        <blockquote class="text-base sm:text-lg text-slate-700 italic leading-relaxed border-l-4 border-indigo-500 pl-4 bg-white/40 p-4 rounded-r-2xl">
+                            "My absolute favorite mentor and guide who makes learning exciting and inspires me every single day!"
+                        </blockquote>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Md. Nayem Sir's dedication to teaching and his caring guidance have been a monumental source of motivation for Evan. He doesn't just teach lessons; he builds curiosity, confidence, and character in every student.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Photo Gallery Section -->
+        <section id="gallery" class="space-y-8">
+            <div class="text-center max-w-2xl mx-auto space-y-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-100 px-3 py-1 rounded-full">Moments & Memories</span>
+                <h2 class="text-3xl font-extrabold text-slate-900">Photo Gallery</h2>
+                <p class="text-sm text-slate-600">A glimpse into Evan's favorite moments, outdoor explorations, and school days.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Gallery Item 1 -->
+                <div class="glass-card p-3 rounded-3xl group overflow-hidden shadow-md hover:shadow-xl transition-all">
+                    <div class="rounded-2xl overflow-hidden aspect-[4/3] bg-slate-200 relative">
+                        <img src="evan.jpg" alt="Nature & River" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x450/e0e7ff/4f46e5?text=Sunset+Boat+Ride'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white text-xs font-semibold"><i class="fa-solid fa-location-dot mr-1 text-amber-400"></i> Scenic River & Boat Journey</span>
+                        </div>
+                    </div>
+                    <div class="p-3 text-center">
+                        <h4 class="font-bold text-sm text-slate-800">Golden Sunset Explorer</h4>
+                        <p class="text-xs text-slate-500">Enjoying peaceful boat rides in nature</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 2 -->
+                <div class="glass-card p-3 rounded-3xl group overflow-hidden shadow-md hover:shadow-xl transition-all">
+                    <div class="rounded-2xl overflow-hidden aspect-[4/3] bg-slate-200 relative">
+                        <img src="evan2.jpg" alt="Green Countryside" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x450/e0e7ff/4f46e5?text=Green+Countryside'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white text-xs font-semibold"><i class="fa-solid fa-tree mr-1 text-emerald-400"></i> Countryside Pathway</span>
+                        </div>
+                    </div>
+                    <div class="p-3 text-center">
+                        <h4 class="font-bold text-sm text-slate-800">Green Fields & Roads</h4>
+                        <p class="text-xs text-slate-500">Exploring lush green village paths</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 3 -->
+                <div class="glass-card p-3 rounded-3xl group overflow-hidden shadow-md hover:shadow-xl transition-all">
+                    <div class="rounded-2xl overflow-hidden aspect-[4/3] bg-slate-200 relative">
+                        <img src="evan5.jpg" alt="School & Studies" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x450/e0e7ff/4f46e5?text=School+Days'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white text-xs font-semibold"><i class="fa-solid fa-school mr-1 text-sky-400"></i> Banophool Adibashi School</span>
+                        </div>
+                    </div>
+                    <div class="p-3 text-center">
+                        <h4 class="font-bold text-sm text-slate-800">HOT</h4>
+                        <p class="text-xs text-slate-500">Sunny day</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Rating System Section -->
+        <section id="rating" class="glass-card p-8 sm:p-12 rounded-3xl space-y-8">
+            <div class="text-center max-w-xl mx-auto space-y-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-3 py-1 rounded-full">Interactive Feedback</span>
+                <h2 class="text-3xl font-extrabold text-slate-900">Rate Evan's Profile</h2>
+                <p class="text-sm text-slate-600">Leave a rating and a comment! Evan can see who rated his profile.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                <!-- Rating Summary & Widget -->
+                <div class="lg:col-span-5 glass-card p-6 rounded-2xl bg-white/50 border border-white space-y-6 text-center">
+                    <div>
+                        <h3 id="display-avg-rating" class="text-5xl font-extrabold text-amber-500">4.9</h3>
+                        <div id="display-stars" class="flex justify-center space-x-1 text-amber-400 my-3 text-lg">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p id="display-total-count" class="text-xs text-slate-500 font-medium">Based on 18 ratings</p>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-200/60 space-y-3">
+                        <button onclick="openAdminModal()" class="w-full py-3 rounded-xl bg-slate-900 text-white font-semibold text-xs hover:bg-slate-800 transition-all shadow-md flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-shield-halved text-amber-400"></i>
+                            <span>View All Raters (Evan's Log)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Rating Form -->
+                <div class="lg:col-span-7 glass-card p-6 sm:p-8 rounded-2xl bg-white/60 border border-white space-y-6">
+                    <h3 class="text-xl font-bold text-slate-900">Submit Your Rating</h3>
+                    
+                    <form id="rating-form" onsubmit="submitRating(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-2">Select Your Rating</label>
+                            <div id="star-selector" class="flex space-x-2 text-2xl text-slate-300 cursor-pointer">
+                                <i class="fa-solid fa-star hover:text-amber-400 transition-colors" data-value="1" onclick="setRating(1)"></i>
+                                <i class="fa-solid fa-star hover:text-amber-400 transition-colors" data-value="2" onclick="setRating(2)"></i>
+                                <i class="fa-solid fa-star hover:text-amber-400 transition-colors" data-value="3" onclick="setRating(3)"></i>
+                                <i class="fa-solid fa-star hover:text-amber-400 transition-colors" data-value="4" onclick="setRating(4)"></i>
+                                <i class="fa-solid fa-star hover:text-amber-400 transition-colors" data-value="5" onclick="setRating(5)"></i>
+                            </div>
+                            <input type="hidden" id="selected-rating" value="5" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Your Name</label>
+                            <input type="text" id="rater-name" required placeholder=" Your Name" class="w-full px-4 py-3 rounded-xl bg-white/80 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Your Nice Comment</label>
+                            <textarea id="rater-comment" rows="3" required placeholder="Write something nice about Evan..." class="w-full px-4 py-3 rounded-xl bg-white/80 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-sky-500 text-white font-bold text-sm shadow-lg shadow-indigo-500/25 hover:opacity-95 transition-opacity flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Submit Rating & Comment</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact & Socials Section -->
+        <section id="contact" class="glass-card p-8 sm:p-12 rounded-3xl space-y-8 text-center">
+            <div class="max-w-xl mx-auto space-y-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-100 px-3 py-1 rounded-full">Get In Touch</span>
+                <h2 class="text-3xl font-extrabold text-slate-900">Contact & Social Links</h2>
+                <p class="text-sm text-slate-600">Feel free to connect with Evan Ahmed via phone, WhatsApp, or social media!</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                <!-- Phone Card -->
+                <a href="tel:01976373910" class="glass-card p-6 rounded-2xl hover:scale-105 transition-all text-center space-y-3 group border border-white">
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center mx-auto text-xl group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900">Phone</h4>
+                    <p class="text-xs text-indigo-600 font-semibold">01976373910</p>
+                </a>
+
+                <!-- WhatsApp Card -->
+                <a href="https://wa.me/8801976373910" target="_blank" class="glass-card p-6 rounded-2xl hover:scale-105 transition-all text-center space-y-3 group border border-white">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-xl group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900">WhatsApp</h4>
+                    <p class="text-xs text-emerald-600 font-semibold">01976373910</p>
+                </a>
+
+                <!-- Facebook Card -->
+                <a href="https://www.facebook.com/share/1CUdp5b3F6/" target="_blank" class="glass-card p-6 rounded-2xl hover:scale-105 transition-all text-center space-y-3 group border border-white">
+                    <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center mx-auto text-xl group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900">Facebook</h4>
+                    <p class="text-xs text-blue-600 font-semibold">Evan's Profile</p>
+                </a>
+
+                <!-- Instagram Card -->
+                <a href="https://www.instagram.com/invites/contact/" target="_blank" class="glass-card p-6 rounded-2xl hover:scale-105 transition-all text-center space-y-3 group border border-white">
+                    <div class="w-12 h-12 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center mx-auto text-xl group-hover:bg-pink-600 group-hover:text-white transition-colors">
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900">Instagram</h4>
+                    <p class="text-xs text-pink-600 font-semibold">Evan's IG Link</p>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-nav py-8 mt-20 border-t border-white/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
+            <p class="text-sm font-semibold text-slate-800">Evan Ahmed • </p>
+            <p class="text-xs text-slate-500">© 2026 All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Admin Modal: View Who Rated -->
+    <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm hidden">
+        <div class="glass-card w-full max-w-2xl p-6 sm:p-8 rounded-3xl space-y-6 max-h-[85vh] overflow-y-auto shadow-2xl border border-white">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg text-slate-900">Evan's Rater Dashboard</h3>
+                        <p class="text-xs text-slate-500">Complete list of visitors who rated your profile</p>
+                    </div>
+                </div>
+                <button onclick="closeAdminModal()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div id="raters-list-container" class="space-y-3">
+                <!-- Dynamically populated raters list -->
+            </div>
+
+            <div class="pt-4 border-t border-slate-200 flex justify-end">
+                <button onclick="closeAdminModal()" class="px-5 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition-colors">
+                    Close Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Initial Default Ratings if none in localStorage
+        const defaultRatings = [
+            { name: "Md. Nayem Sir", rating: 5, comment: "Proud of you Evan! Keep up the brilliant spirit and enthusiasm for learning.", date: "2026-06-12 10:30 AM" },
+            { name: "Rafiq Ahmed", rating: 5, comment: "Awesome portfolio website! Very clean and modern glass design.", date: "2026-06-12 11:15 AM" },
+            { name: "Sadia Sultana", rating: 5, comment: "Loved the nature photos and tribute to your favorite teacher!", date: "2026-06-12 02:45 PM" }
+        ];
+
+        function getStoredRatings() {
+            const stored = localStorage.getItem('evan_portfolio_ratings');
+            if (!stored) {
+                localStorage.setItem('evan_portfolio_ratings', JSON.stringify(defaultRatings));
+                return defaultRatings;
+            }
+            try {
+                return JSON.parse(stored);
+            } catch (e) {
+                return defaultRatings;
+            }
+        }
+
+        function saveRatings(ratings) {
+            localStorage.setItem('evan_portfolio_ratings', JSON.stringify(ratings));
+        }
+
+        // Initialize Star Rating Selector
+        let currentSelectedStars = 5;
+        function setRating(val) {
+            currentSelectedStars = val;
+            document.getElementById('selected-rating').value = val;
+            const stars = document.querySelectorAll('#star-selector i');
+            stars.forEach((star, index) => {
+                if (index < val) {
+                    star.classList.remove('text-slate-300');
+                    star.classList.add('text-amber-400');
+                } else {
+                    star.classList.remove('text-amber-400');
+                    star.classList.add('text-slate-300');
+                }
+            });
+        }
+
+        // Set default 5 stars active on load
+        setRating(5);
+
+        // Update UI Stats & Raters List
+        function updateRatingsUI() {
+            const ratings = getStoredRatings();
+            const total = ratings.length;
+            let sum = 0;
+            ratings.forEach(r => sum += Number(r.rating));
+            const avg = total > 0 ? (sum / total).toFixed(1) : "5.0";
+
+            // Update displays
+            document.getElementById('display-avg-rating').innerText = avg;
+            document.getElementById('display-total-count').innerText = `Based on ${total} rating${total === 1 ? '' : 's'}`;
+            document.getElementById('hero-avg-rating').innerHTML = `<span>${avg}</span> <i class="fa-solid fa-star text-sm"></i>`;
+            document.getElementById('hero-total-raters').innerText = `${total}+`;
+
+            // Populate Admin Rater List
+            const container = document.getElementById('raters-list-container');
+            if (ratings.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-6">No ratings yet. Be the first to rate Evan's profile!</p>`;
+                return;
+            }
+
+            container.innerHTML = ratings.slice().reverse().map(r => `
+                <div class="glass-card p-4 rounded-2xl bg-white/70 border border-white space-y-2">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs">
+                                ${r.name.charAt(0).toUpperCase()}
+                            </div>
+                            <h4 class="font-bold text-sm text-slate-900">${escapeHtml(r.name)}</h4>
+                        </div>
+                        <div class="flex items-center space-x-1 text-amber-400 text-xs font-bold">
+                            <span>${r.rating}</span>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 pl-10">${escapeHtml(r.comment)}</p>
+                    <div class="text-right text-[10px] text-slate-400 pl-10">${r.date || 'Recently'}</div>
+                </div>
+            `).join('');
+        }
+
+        // Submit Rating Handler
+        function submitRating(e) {
+            e.preventDefault();
+            const name = document.getElementById('rater-name').value.trim();
+            const comment = document.getElementById('rater-comment').value.trim();
+            const rating = Number(document.getElementById('selected-rating').value);
+
+            if (!name || !comment) return;
+
+            const now = new Date();
+            const dateStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            const ratings = getStoredRatings();
+            ratings.push({ name, rating, comment, date: dateStr });
+            saveRatings(ratings);
+
+            updateRatingsUI();
+
+            // Reset form
+            document.getElementById('rating-form').reset();
+            setRating(5);
+
+            showToast("Rating Submitted!", `Thank you ${name}, your rating was saved successfully.`);
+        }
+
+        // Toast notification
+        function showToast(title, msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').innerText = title;
+            document.getElementById('toast-msg').innerText = msg;
+            toast.classList.remove('translate-y-[-200%]');
+            setTimeout(() => {
+                toast.classList.add('translate-y-[-200%]');
+            }, 4000);
+        }
+
+        // Admin Modal Controls
+        function openAdminModal() {
+            updateRatingsUI();
+            document.getElementById('admin-modal').classList.remove('hidden');
+        }
+
+        function closeAdminModal() {J
+            document.getElementById('admin-modal').classList.add('hidden');
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Helper to prevent XSS
+        function escapeHtml(text) {
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        // Run initialization on load
+        window.onload = function() {
+            updateRatingsUI();
+        };
+    </script>
+</body>
+</html>
